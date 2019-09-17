@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List of Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+<div class="container">
+
+    <form th:action="@{/logout}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="registration"
+                type="Submit">Logout
+        </button>
+    </form>
+
+    <form th:action="@{/user/listSubscriptions}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="registration"
+                type="Submit">Back
+        </button>
+    </form>
+</div>
+
+<div class="w3-container">
+    <form th:action="@{/user/content/{id}(id=*{id})}" th:method="get" th:object="${content}">
+        <div class="w3-bar-item">
+            Title:<br>
+            [[${content.title}]]
+        </div><br>
+        <div class="w3-bar-item">
+            Description:<br>
+            [[${content.description}]]
+        </div><br>
+        <div class="w3-bar-item">
+            Article:<br>
+            [[${content.text}]]
+        </div><br>
+    </form>
+</div>
+
+</body>
+</html>
