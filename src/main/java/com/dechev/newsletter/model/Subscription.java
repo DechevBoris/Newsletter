@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,15 +23,12 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-//    @NotEmpty
     User user;
 
     @ManyToOne
     @JoinColumn(name = "content_id")
-//    @NotEmpty
     Content content;
 
     @Column(name = "date_of_subscription")
-//    @NotEmpty
     LocalDateTime dateOfSubscription;
 }
