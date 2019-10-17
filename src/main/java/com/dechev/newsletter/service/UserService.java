@@ -114,4 +114,8 @@ public class UserService {
             }
         }
     }
+
+    public Subscription findSubByUserIdAndContentId(UUID uid, int cid) {
+        return subscriptionRepository.findByUserIdAndAndContentId(uid, cid);
+    }
 }

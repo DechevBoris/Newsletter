@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -60,6 +61,7 @@ public class UserController {
         if (userService.checkIfUserSubscribed(id, principal.getName())) {
             modelAndView.setViewName("user/content");
             modelAndView.addObject("content", contentService.findById(id));
+            modelAndView.addObject("data", userService.findSubByUserIdAndContentId(UUID.fromString(userService.findUserByEmail(principal.getName()).getId().toString()), id).getDateOfSubscription().toString());
         }
         else {
             modelAndView.setViewName("user/home");
