@@ -21,11 +21,6 @@ import java.util.UUID;
 @Table(name = "user")
 public class User {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "user_id")
-//    private int id;
-
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")

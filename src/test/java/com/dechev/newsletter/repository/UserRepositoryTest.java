@@ -4,7 +4,10 @@ import com.dechev.newsletter.model.Role;
 import com.dechev.newsletter.model.User;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,39 +16,49 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.Assert.*;
+
+import static org.mockito.MockitoAnnotations.initMocks;
+
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(locations= "classpath:application-test.properties")
 public class UserRepositoryTest {
-//
-//    @Autowired
-//    private TestEntityManager entityManager;
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired RoleRepository roleRepository;
+    @Mock
+    private RoleRepository roleRepository;
+
+    private User user;
 
     @Before
     public void setUp() {
-        roleRepository.save(new Role(1, "ADMIN"));
-        roleRepository.save(new Role(2, "USER"));
+
+        initMocks(this);
+
+        //init role repository
+        Mockito.when(roleRepository.findByRole("ADMIN")).thenReturn(Role.builder().role("ADMIN").build());
+        Mockito.when(roleRepository.findByRole("USER")).thenReturn(Role.builder().role("USER").build());
+
+        //init user
+        user = User.builder()
+                .email("user@email.test")
+                .password("user_password_test")
+                .name("user_name_test")
+                .lastName("user_last_name_test")
+                .active(1)
+                .roles(new HashSet<>(Arrays.asList(roleRepository.findByRole("USER"))))
+                .build();
     }
 
     @Test
-    public void whenFindByEmail_thenReturnUser() {
-
-        User user = new User();
-        user.setEmail("test@test.test");
-        user.setLastName("lastNameTest");
-        user.setName("nameTest");
-        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByRole("USER"))));
-        user.setActive(1);
-        user.setPassword("12345678");
+    public void saveUserTest() {
 
         //check if user's id is still null
         assertNull(user.getId());
@@ -54,10 +67,30 @@ public class UserRepositoryTest {
 
         //check if user's id is not null after being persisted
         assertNotNull(user.getId());
+    }
+
+    @Test
+    public void findByEmailTest() {
+
+        userRepository.save(user);
 
         User found = userRepository.findByEmail(user.getEmail());
-        assertEquals(found.getEmail(), user.getEmail());
 
-        
+        //check if all the properties of the user match with the ones of the found
+        assertEquals(user.getEmail(), found.getEmail());
+        assertEquals(user.getPassword(), found.getPassword());
+        assertEquals(user.getLastName(), found.getLastName());
+        assertEquals(user.getName(), found.getName());
+        assertEquals("USER", found.getRoles().stream().findFirst().get().getRole());
+    }
+
+    @Test
+    public void findAllTest() {
+
+        userRepository.save(user);
+
+        List<User> result = userRepository.findAll();
+
+        assertEquals(1, result.size());
     }
 }

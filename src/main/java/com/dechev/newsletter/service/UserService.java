@@ -49,7 +49,12 @@ public class UserService {
         user.setActive(1);
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
-        return userRepository.save(user);
+        userRepository.save(user);
+        if(userRepository.count() == 1){
+            System.out.println("sth");
+        }
+        return user;
+//        return userRepository.save(user);
     }
 
     public boolean checkIfPasswordsMatch(UserDto userDto) {

@@ -21,11 +21,11 @@ public class Subscription {
     @Column(name = "subscription_id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "content_id")
     Content content;
 
