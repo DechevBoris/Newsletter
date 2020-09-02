@@ -50,11 +50,7 @@ public class UserService {
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
         userRepository.save(user);
-        if(userRepository.count() == 1){
-            System.out.println("sth");
-        }
         return user;
-//        return userRepository.save(user);
     }
 
     public boolean checkIfPasswordsMatch(UserDto userDto) {

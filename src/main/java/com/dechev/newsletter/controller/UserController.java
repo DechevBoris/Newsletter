@@ -76,7 +76,6 @@ public class UserController {
         if (userService.checkIfUserSubscribed(id, principal.getName())) {
             userService.cancelSubscription(id, principal.getName());
             modelAndView.setViewName("user/home");
-//            modelAndView.addObject("contents", userService.findAllSubscribedContents(principal.getName()));
         }
         else {
             modelAndView.setViewName("user/home");
